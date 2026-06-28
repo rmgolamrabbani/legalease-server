@@ -512,7 +512,7 @@ app.delete('/api/requests/:id', async (req, res) => {
     });
 
     // Ping check
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
   } catch (error) {
     console.error("Database connection error:", error);
   }
