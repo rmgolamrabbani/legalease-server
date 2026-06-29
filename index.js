@@ -448,31 +448,6 @@ app.delete('/api/requests/:id', async (req, res) => {
     });
 
 
-    app.put('/api/update-user-only', async (req, res) => {
-  try {
-    const { email, name, avatarUrl } = req.body;
-    
-    if (!email) {
-      return res.status(400).send({ error: "Email validation failed" });
-    }
-
-    const filter = { email: email };
-    const updateDoc = {
-      $set: {
-        name: name,
-        image: avatarUrl, 
-        updatedAt: new Date()
-      }
-    };
-
-    
-    const result = await usersCollection.updateOne(filter, updateDoc, { upsert: true });
-    res.send({ success: true, result });
-  } catch (error) {
-    res.status(500).send({ error: error.message });
-  }
-});
-
 
     
     // =========================================================================
