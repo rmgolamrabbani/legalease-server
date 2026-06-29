@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // =========================================================================
-// Better Auth JWT Middleware (শুধুমাত্র তৈরি করে রাখা হলো)
+// Better Auth JWT Middleware 
 // =========================================================================
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -446,6 +446,34 @@ app.delete('/api/requests/:id', async (req, res) => {
         res.status(500).send({ error: error.message });
       }
     });
+
+
+    app.put('/api/update-user-only', async (req, res) => {
+  try {
+    const { email, name, avatarUrl } = req.body;
+    
+    if (!email) {
+      return res.status(400).send({ error: "Email validation failed" });
+    }
+
+    const filter = { email: email };
+    const updateDoc = {
+      $set: {
+        name: name,
+        image: avatarUrl, 
+        updatedAt: new Date()
+      }
+    };
+
+    
+    const result = await usersCollection.updateOne(filter, updateDoc, { upsert: true });
+    res.send({ success: true, result });
+  } catch (error) {
+    res.status(500).send({ error: error.message });
+  }
+});
+
+
     
     // =========================================================================
     // ৬. ADMIN API ENDPOINTS 
